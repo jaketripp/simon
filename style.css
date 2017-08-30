@@ -45,4 +45,10 @@ body {
 	background-color: #1D8CFF
 }
 
-/*03e166*/
+.button{
+	transition: all 0.2s;
+}
+
+.picked {
+  opacity: 0.7;
+}

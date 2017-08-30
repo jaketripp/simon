@@ -1,8 +1,7 @@
 
-var numSeries = [4, 1, 4, 1, 1, 3, 4, 3, 3, 4, 1, 3, 3, 2, 2, 4, 3, 3, 4, 2, 1];
-var quadrantSeries = [];
+var sequence = [];
 
-var quadrantKey = {
+var key = {
 	1: '#topRight',
 	2: '#topLeft',
 	3: '#bottomLeft',
@@ -10,49 +9,40 @@ var quadrantKey = {
 }
 
 function init(){
-	addNewStep();
-	clickEvents();
-	// computerAnimations();
+	generateSequence();
+	events();
 }
 
-function clickEvents(){
+function events(){
 	$('.button').on('click', function(e){
 
 		var id = '#' + e.target.id;
-
 		playAudio(id);
-
-		$(id).animate({
-			opacity: 0.7,
-		}, 200);
-
-		$(id).animate({
-			opacity: 1,
-		}, 200);
+		$(id).addClass('picked');		
+		
 	});
+	$('.buttons').on('transitionend', '.button', removeTransition);
 }
 
-// function computerAnimations(){
-// 	numSeries.forEach(function(num){
-// 		var id = quadrantKey[num];
-// 		playAudio(id);
+function removeTransition(e) {
+    if (e.originalEvent.propertyName !== 'opacity') {
+    	return;
+    }
+	e.target.classList.remove('picked');
+  }
 
-// 		$(id).animate({
-// 			opacity: 0.7,
-// 		}, 200);
-
-// 		$(id).animate({
-// 			opacity: 1,
-// 		}, 200);	
-// 	});
-// }
 
 function playAudio(id){
-	$(id + ' audio')[0].play();
+	var audio = $(id + ' audio')[0];
+	audio.play();
 }
 
+// if they get all 20 in a row
 // $('#congrats')[0].play();
+
+// if strict mode is toggled and they miss one
 // $('#fail')[0].play();
+// then clear 
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -60,10 +50,19 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function addNewStep(){
-	var curr = getRandomInt(1,4);
-	numSeries.push(curr);
-	quadrantSeries.push(quadrantKey[curr]);
+function generateSequence(){
+	sequence = [];
+	for (var i = 1; i <= 20; i++){
+		var curr = getRandomInt(1,4);
+		sequence.push(key[curr]);
+	}
+	console.log(sequence);
+}
+
+function animateSequence(){
+	sequence.forEach(function(curr){
+
+	});
 }
 
 
@@ -81,6 +80,11 @@ function addNewStep(){
 // strict mode is a toggle so that if you get one wrong it restarts
 // use audio for link finding cool thing when you win
 // paper mario game over for when you lose
+
+// iterate through quadrant array and make sure that you click the right one
+// if you don't, play the computer animations again and let the user try again
+// if you get them all, add a new step
+
 
 
 init();
