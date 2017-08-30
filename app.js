@@ -1,5 +1,5 @@
 
-var numSeries = [];
+var numSeries = [4, 1, 4, 1, 1, 3, 4, 3, 3, 4, 1, 3, 3, 2, 2, 4, 3, 3, 4, 2, 1];
 var quadrantSeries = [];
 
 var quadrantKey = {
@@ -11,10 +11,11 @@ var quadrantKey = {
 
 function init(){
 	addNewStep();
-	buttonAnimations();
+	clickEvents();
+	// computerAnimations();
 }
 
-function buttonAnimations(){
+function clickEvents(){
 	$('.button').on('click', function(e){
 
 		var id = '#' + e.target.id;
@@ -31,9 +32,27 @@ function buttonAnimations(){
 	});
 }
 
+// function computerAnimations(){
+// 	numSeries.forEach(function(num){
+// 		var id = quadrantKey[num];
+// 		playAudio(id);
+
+// 		$(id).animate({
+// 			opacity: 0.7,
+// 		}, 200);
+
+// 		$(id).animate({
+// 			opacity: 1,
+// 		}, 200);	
+// 	});
+// }
+
 function playAudio(id){
 	$(id + ' audio')[0].play();
 }
+
+// $('#congrats')[0].play();
+// $('#fail')[0].play();
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -42,22 +61,10 @@ function getRandomInt(min, max) {
 }
 
 function addNewStep(){
-	
 	var curr = getRandomInt(1,4);
 	numSeries.push(curr);
 	quadrantSeries.push(quadrantKey[curr]);
-
-	console.log(numSeries);
-	console.log(quadrantSeries);
 }
-
-
-// setInterval(function(){
-// 	if (numSeries.length < 20){
-// 		addNewStep();
-// 	}
-// }, 1000)
-
 
 
 // have a global array of up to 20 numbers [1-4] inclusive
