@@ -1,0 +1,48 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+/* top left #02A74B */
+/* top right #9C121C */
+/* bottom left #CBA60C */
+/* bottom right #1D8CFF */
+/* 3 shades lighter when clicked*/
+
+#topLeft {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 50%;
+	bottom: 50%;
+	background-color: #02A74B;
+}
+
+#topRight {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	right: 0;
+	bottom: 50%;
+	background-color: #9C121C
+}
+
+#bottomLeft {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 50%;
+	bottom: 0;
+	background-color: #CBA60C
+}
+
+#bottomRight {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	right: 0;
+	bottom: 0;
+	background-color: #1D8CFF
+}
+
+/*03e166*/
