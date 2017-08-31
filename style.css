@@ -7,9 +7,8 @@ body {
 /* top right #9C121C */
 /* bottom left #CBA60C */
 /* bottom right #1D8CFF */
-/* 3 shades lighter when clicked*/
 
-#topLeft {
+#green {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -18,7 +17,7 @@ body {
 	background-color: #02A74B;
 }
 
-#topRight {
+#red {
 	position: absolute;
 	top: 0;
 	left: 50%;
@@ -27,7 +26,7 @@ body {
 	background-color: #9C121C
 }
 
-#bottomLeft {
+#yellow {
 	position: absolute;
 	top: 50%;
 	left: 0;
@@ -36,7 +35,7 @@ body {
 	background-color: #CBA60C
 }
 
-#bottomRight {
+#blue {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -51,4 +50,10 @@ body {
 
 .picked {
   opacity: 0.7;
+}
+
+.ui.raised.segment {
+	max-width: 500px;
+	text-align: center;
+	margin: 0 auto;
 }

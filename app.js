@@ -2,15 +2,16 @@
 var sequence = [];
 
 var key = {
-	1: '#topRight',
-	2: '#topLeft',
-	3: '#bottomLeft',
-	4: '#bottomRight'
+	1: '#red',
+	2: '#green',
+	3: '#yellow',
+	4: '#blue'
 }
 
 function init(){
 	generateSequence();
 	events();
+	animateSequence();
 }
 
 function events(){
@@ -60,9 +61,11 @@ function generateSequence(){
 }
 
 function animateSequence(){
-	sequence.forEach(function(curr){
-
-	});
+	// sequence.forEach(function(curr){
+	// 	playAudio(curr);
+	// 	$(curr).addClass('picked');
+	// 	$(curr).on('transitionend', removeTransition);
+	// });
 }
 
 
