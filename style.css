@@ -61,6 +61,10 @@ body {
 }
 
 .ui.raised.segment {
-	width: 350px;
+	max-width: 85%;
 	text-align: center;
+}
+
+.ui.raised.segment > * {
+	margin: 8px;
 }

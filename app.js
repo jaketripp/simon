@@ -55,15 +55,6 @@ function clickEvents(){
 	});
 	$('.buttons').on('transitionend', '.tile', removeTransition);
 
-	// store whether strict mode enabled or not
-	$('input[type="checkbox"]').on('click',function(){
-	   if ($(this).attr('data-clicked') === 'true') {
-			$(this).attr('data-clicked', 'false');
-	   } else {
-			$(this).attr('data-clicked', 'true');
-	   }
-	});
-
 	// restart button
 	$('label#restart').on('click', function(){
 		reset();
@@ -152,16 +143,20 @@ function outcomeOfUserSequence(){
 	// if strict mode, generate new sequence and reset round back to 1
 	if (!checkUserSequence()) {
 
-		var strictMode = $('input[type="checkbox"]').attr('data-clicked');
-		if (strictMode === 'true'){
+		var strictMode = $('input[type="checkbox"]').prop('checked');
+		if (strictMode){
+			setTimeout(function(){
+				$('#fail')[0].play();
+			}, 1000);
 			reset();
+			setTimeout(function(){
+				animateSequence();
+			}, 7000)
+			return;
 		}
 		setTimeout(function(){
-			$('#fail')[0].play();
-		}, 1000);
-		setTimeout(function(){
 			animateSequence();
-		}, 5000)
+		}, 2000)
 	} else {
 		console.log('user sequence length ' + userSequence.length);
 		console.log('round ' + round);
