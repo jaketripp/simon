@@ -55,5 +55,7 @@ body {
 .ui.raised.segment {
 	max-width: 500px;
 	text-align: center;
-	margin: 0 auto;
+	position: absolute;
+	top: calc(45%);
+	left: calc(45%);
 }

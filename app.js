@@ -1,6 +1,11 @@
+// =========
+// VARIABLES
+// =========
 
 var sequence = [];
 var userSequence;
+var round = 1;
+var numberToWin = 5;
 
 var key = {
 	1: '#red',
@@ -8,6 +13,24 @@ var key = {
 	3: '#yellow',
 	4: '#blue'
 }
+
+// ===================
+// AUXILIARY FUNCTIONS
+// ===================
+
+function minTwoDigits(n) {
+  return (n < 10 ? '0' : '') + n;
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// ==============
+// MAIN FUNCTIONS
+// ==============
 
 function init(){
 	generateSequence();
@@ -29,21 +52,19 @@ function clickEvents(){
 
 function updateDOM(){
 	$('label#round')[0].textContent = minTwoDigits(round);
+	if (round === numberToWin){
+		$('label#round')[0].textContent = 'FINAL';
+	}
 }
 
-function minTwoDigits(n) {
-  return (n < 10 ? '0' : '') + n;
-}
 
 function reset(){
 	round = 1;
 	updateDOM();
 	generateSequence();
-	animateSequence();
+	// animateSequence();
 	console.log(userSequence);
 }
-
-
 
 function removeEventHandlers(){
 	$('.button').off();
@@ -65,32 +86,17 @@ function playAudio(id){
 	audio.play();
 }
 
-// if they get all 20 in a row
-// $('#congrats')[0].play();
-
-// if strict mode is toggled and they miss one
-// $('#fail')[0].play();
-// then clear 
-
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function generateSequence(){
 	sequence = [];
 	userSequence = [];
-	for (var i = 1; i <= 20; i++){
+	for (var i = 1; i <= numberToWin; i++){
 		var curr = getRandomInt(1,4);
 		sequence.push(key[curr]);
 	}
 	console.log(sequence);
 }
 
-// increment this every time the user does this many clicks correct
-// when it gets to 20, press
-var round = 1;
+
 
 function animateSequence(){
 
@@ -140,6 +146,16 @@ function trackUserSequence(){
 		} else {
 			console.log('user sequence length ' + userSequence.length);
 			console.log('round ' + round);
+			
+			// did correct sequence and done
+			if (round === numberToWin){
+				setTimeout(function(){
+					$('#congrats')[0].play();
+					reset();
+				}, 300);
+			}
+
+			// did correct sequence but not done
 			if (userSequence.length === round){
 				round++;
 				updateDOM();
@@ -147,12 +163,6 @@ function trackUserSequence(){
 					animateSequence();
 				}, 1000);
 					
-			}
-			// set to 21 eventually
-			if (round === 21){
-				setTimeout(function(){
-					$('#congrats')[0].play();
-				}, 300);
 			}
 		}
 	});
