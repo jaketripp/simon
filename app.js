@@ -5,7 +5,7 @@
 var sequence = [];
 var userSequence;
 var round = 1;
-var numberToWin = 5;
+var numberToWin = 3;
 
 var key = {
 	1: '#red',
@@ -28,6 +28,12 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function removeEventHandlers(){
+	$('.tile').off();
+	$('.buttons').off();
+	$('label#restart').off();
+}
+
 // ==============
 // MAIN FUNCTIONS
 // ==============
@@ -37,17 +43,15 @@ function init(){
 	animateSequence();
 }
 
-function clickEvents(){
-	$('.button').on('click', function(e){
+function animationClickEvent(){
+	$('.tile').on('click', function(e){
 
 		var id = '#' + e.target.id;
 		playAudio(id);
 		$(id).addClass('picked');		
 		
 	});
-	$('.buttons').on('transitionend', '.button', removeTransition);
-
-	$('label#restart').on('click', reset);
+	$('.buttons').on('transitionend', '.tile', removeTransition);
 }
 
 function updateDOM(){
@@ -57,19 +61,18 @@ function updateDOM(){
 	}
 }
 
-
 function reset(){
 	round = 1;
 	updateDOM();
 	generateSequence();
-	// animateSequence();
 	console.log(userSequence);
 }
 
-function removeEventHandlers(){
-	$('.button').off();
-	$('.buttons').off();
-	$('label#restart').off();
+function resetClickEvent(){
+	$('label#restart').on('click', function(){
+		reset();
+		animateSequence();
+	});
 }
 
 function removeTransition(e) {
@@ -96,8 +99,6 @@ function generateSequence(){
 	console.log(sequence);
 }
 
-
-
 function animateSequence(){
 
 	removeEventHandlers();
@@ -114,7 +115,8 @@ function animateSequence(){
 
 	setTimeout(function(){
 		clearInterval(endIntervalID);
-		clickEvents();
+		animationClickEvent();
+		resetClickEvent();
 		trackUserSequence();
 	},timeToKillInterval);	
 }
@@ -122,9 +124,10 @@ function animateSequence(){
 function trackUserSequence(){
 	userSequence = [];
 	removeEventHandlers();
-	clickEvents();
+	animationClickEvent();
+	resetClickEvent();
 
-	$('.buttons').on('click', '.button', function(e){
+	$('.buttons').on('click', '.tile', function(e){
 		
 
 		if (userSequence.length <= round){
@@ -134,38 +137,59 @@ function trackUserSequence(){
 
 		} 
 		console.log(userSequence)
+		outcomeOfUserSequence();
+	});
+}
 
-		// if strict mode, generate new sequence and reset round back to 1
-		if (!checkUserSequence()) {
+function outcomeOfUserSequence(){
+	// if strict mode, generate new sequence and reset round back to 1
+	if (!checkUserSequence()) {
+		setTimeout(function(){
+			$('#fail')[0].play();
+		}, 1000);
+		setTimeout(function(){
+			animateSequence();
+		}, 5000)
+	} else {
+		console.log('user sequence length ' + userSequence.length);
+		console.log('round ' + round);
+
+		// final sequence done
+		if (userSequence.length === numberToWin){
 			setTimeout(function(){
-				$('#fail')[0].play();
-			}, 1000);
+				winMessage();
+			}, 300);
+			return;
+		}
+		// did correct sequence so far
+		if (userSequence.length === round){
+			round++;
+			updateDOM();
 			setTimeout(function(){
 				animateSequence();
-			}, 5000)
-		} else {
-			console.log('user sequence length ' + userSequence.length);
-			console.log('round ' + round);
-			
-			// did correct sequence and done
-			if (round === numberToWin){
-				setTimeout(function(){
-					$('#congrats')[0].play();
-					reset();
-				}, 300);
-			}
+			}, 1000);
+		}
 
-			// did correct sequence but not done
-			if (userSequence.length === round){
-				round++;
-				updateDOM();
+	}
+}
+
+function winMessage(){
+	$('#congrats')[0].play();
+	reset();
+
+	$('.ui.modal')
+		.modal('setting', 'transition', 'fade')
+		.modal({
+			onDeny: function(){
+				return true;
+			},
+			onApprove: function(){
 				setTimeout(function(){
 					animateSequence();
-				}, 1000);
-					
-			}
-		}
-	});
+				}, 300);
+			},
+		})
+		.modal('show');
 }
 
 // as soon as you get one wrong play the sad thing
@@ -183,25 +207,9 @@ function checkUserSequence(){
     return true;
 }
 
-// have a global array of up to 20 numbers [1-4] inclusive
-// when you press start, empty the array, generate new random number
-// have an object that translates number to selector
-// when you click the right sequence, push a new number to array
+
 // when array is length 20, have cool semantic alert that you won
 
-// have the current length of the array (current number of sequence)
-// displayed always
-
-// if you press the wrong button, semantic alert that it was wrong
-
 // strict mode is a toggle so that if you get one wrong it restarts
-// use audio for link finding cool thing when you win
-// paper mario game over for when you lose
-
-// iterate through quadrant array and make sure that you click the right one
-// if you don't, play the computer animations again and let the user try again
-// if you get them all, add a new step
-
-
 
 init();
