@@ -31,6 +31,7 @@ function getRandomInt(min, max) {
 function removeEventHandlers(){
 	$('.tile').off();
 	$('.buttons').off();
+	$('input').off();
 	$('label#restart').off();
 }
 
@@ -43,7 +44,8 @@ function init(){
 	animateSequence();
 }
 
-function animationClickEvent(){
+function clickEvents(){
+	// animation and audio for tiles
 	$('.tile').on('click', function(e){
 
 		var id = '#' + e.target.id;
@@ -52,6 +54,21 @@ function animationClickEvent(){
 		
 	});
 	$('.buttons').on('transitionend', '.tile', removeTransition);
+
+	// store whether strict mode enabled or not
+	$('input[type="checkbox"]').on('click',function(){
+	   if ($(this).attr('data-clicked') === 'true') {
+			$(this).attr('data-clicked', 'false');
+	   } else {
+			$(this).attr('data-clicked', 'true');
+	   }
+	});
+
+	// restart button
+	$('label#restart').on('click', function(){
+		reset();
+		animateSequence();
+	});
 }
 
 function updateDOM(){
@@ -68,20 +85,12 @@ function reset(){
 	console.log(userSequence);
 }
 
-function resetClickEvent(){
-	$('label#restart').on('click', function(){
-		reset();
-		animateSequence();
-	});
-}
-
 function removeTransition(e) {
     if (e.originalEvent.propertyName !== 'opacity') {
     	return;
     }
 	e.target.classList.remove('picked');
-  }
-
+}
 
 function playAudio(id){
 	var audio = $(id + ' audio')[0];
@@ -115,8 +124,7 @@ function animateSequence(){
 
 	setTimeout(function(){
 		clearInterval(endIntervalID);
-		animationClickEvent();
-		resetClickEvent();
+		clickEvents();
 		trackUserSequence();
 	},timeToKillInterval);	
 }
@@ -124,9 +132,8 @@ function animateSequence(){
 function trackUserSequence(){
 	userSequence = [];
 	removeEventHandlers();
-	animationClickEvent();
-	resetClickEvent();
-
+	clickEvents();
+	
 	$('.buttons').on('click', '.tile', function(e){
 		
 
@@ -144,6 +151,11 @@ function trackUserSequence(){
 function outcomeOfUserSequence(){
 	// if strict mode, generate new sequence and reset round back to 1
 	if (!checkUserSequence()) {
+
+		var strictMode = $('input[type="checkbox"]').attr('data-clicked');
+		if (strictMode === 'true'){
+			reset();
+		}
 		setTimeout(function(){
 			$('#fail')[0].play();
 		}, 1000);
