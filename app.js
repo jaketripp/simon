@@ -61,11 +61,20 @@ function generateSequence(){
 }
 
 function animateSequence(){
-	// sequence.forEach(function(curr){
-	// 	playAudio(curr);
-	// 	$(curr).addClass('picked');
-	// 	$(curr).on('transitionend', removeTransition);
-	// });
+
+	var count = 0;
+
+	setInterval(function(){
+		playAudio(sequence[count]);
+		$(sequence[count]).addClass('picked');
+		$(sequence[count]).on('transitionend', removeTransition);
+		count++;		
+	}, 1000);
+	
+	setTimeout(function(){
+		clearInterval(1);
+	},21000)
+	
 }
 
 
