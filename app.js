@@ -39,6 +39,7 @@ function reset(){
 	round = 1;
 	updateDOM();
 	generateSequence();
+	animateSequence();
 	console.log(userSequence);
 }
 
