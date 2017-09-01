@@ -64,16 +64,16 @@ function animateSequence(){
 
 	var count = 0;
 
-	setInterval(function(){
+	var endIntervalID = setInterval(function(){
 		playAudio(sequence[count]);
 		$(sequence[count]).addClass('picked');
 		$(sequence[count]).on('transitionend', removeTransition);
 		count++;		
 	}, 1000);
-	
+
 	setTimeout(function(){
-		clearInterval(1);
-	},21000)
+		clearInterval(endIntervalID);
+	},21500)
 	
 }
 
