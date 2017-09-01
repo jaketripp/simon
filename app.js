@@ -23,11 +23,31 @@ function clickEvents(){
 		
 	});
 	$('.buttons').on('transitionend', '.button', removeTransition);
+
+	$('label#restart').on('click', reset);
 }
+
+function updateDOM(){
+	$('label#round')[0].textContent = minTwoDigits(round);
+}
+
+function minTwoDigits(n) {
+  return (n < 10 ? '0' : '') + n;
+}
+
+function reset(){
+	round = 1;
+	updateDOM();
+	generateSequence();
+	console.log(userSequence);
+}
+
+
 
 function removeEventHandlers(){
 	$('.button').off();
 	$('.buttons').off();
+	$('label#restart').off();
 }
 
 function removeTransition(e) {
@@ -59,6 +79,7 @@ function getRandomInt(min, max) {
 
 function generateSequence(){
 	sequence = [];
+	userSequence = [];
 	for (var i = 1; i <= 20; i++){
 		var curr = getRandomInt(1,4);
 		sequence.push(key[curr]);
@@ -120,6 +141,7 @@ function trackUserSequence(){
 			console.log('round ' + round);
 			if (userSequence.length === round){
 				round++;
+				updateDOM();
 				setTimeout(function(){
 					animateSequence();
 				}, 1000);
