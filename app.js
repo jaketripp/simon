@@ -5,7 +5,7 @@
 var sequence = [];
 var userSequence;
 var round = 1;
-var numberToWin = 3;
+var numberToWin = 2;
 
 var key = {
 	1: '#red',
@@ -26,13 +26,6 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function removeEventHandlers(){
-	$('.tile').off();
-	$('.buttons').off();
-	$('input').off();
-	$('label#restart').off();
 }
 
 // ==============
@@ -60,12 +53,35 @@ function clickEvents(){
 		reset();
 		animateSequence();
 	});
+
+	keyDownEvent();
+}
+
+// just for fun, doesn't work yet
+function keyDownEvent(){
+
+	var keyCodeToColor = {
+		82: "#red",
+		71: "#green",
+		89: "#yellow",
+		66: "#blue"
+	}
+
+	$('body').keydown(function(e){
+		if (keyCodeToColor[e.which]){
+			var id = keyCodeToColor[e.which];
+			playAudio(id);
+			$(id).addClass('picked');
+		}
+	})
+
+	$('.buttons').on('transitionend', '.tile', removeTransition);
 }
 
 function updateDOM(){
 	$('label#round')[0].textContent = minTwoDigits(round);
 	if (round === numberToWin){
-		$('label#round')[0].textContent = 'FINAL';
+		$('label#round')[0].textContent = 'FINAL ROUND';
 	}
 }
 
@@ -81,6 +97,14 @@ function removeTransition(e) {
     	return;
     }
 	e.target.classList.remove('picked');
+}
+
+function removeEventHandlers(){
+	$('.tile').off();
+	$('.buttons').off();
+	$('input').off();
+	$('label#restart').off();
+	$('body').off();
 }
 
 function playAudio(id){
@@ -100,7 +124,6 @@ function generateSequence(){
 }
 
 function animateSequence(){
-
 	removeEventHandlers();
 
 	var i = 0;
@@ -126,14 +149,12 @@ function trackUserSequence(){
 	clickEvents();
 	
 	$('.buttons').on('click', '.tile', function(e){
-		
 
 		if (userSequence.length <= round){
-
 			var id = '#' + e.target.id;
 			userSequence.push(id);
-
 		} 
+
 		console.log(userSequence)
 		outcomeOfUserSequence();
 	});
@@ -143,8 +164,8 @@ function outcomeOfUserSequence(){
 	// if strict mode, generate new sequence and reset round back to 1
 	if (!checkUserSequence()) {
 
-		var strictMode = $('input[type="checkbox"]').prop('checked');
-		if (strictMode){
+		var strictModeEnabled = $('input[type="checkbox"]').prop('checked');
+		if (strictModeEnabled){
 			setTimeout(function(){
 				$('#fail')[0].play();
 			}, 1000);
@@ -157,6 +178,7 @@ function outcomeOfUserSequence(){
 		setTimeout(function(){
 			animateSequence();
 		}, 2000)
+
 	} else {
 		console.log('user sequence length ' + userSequence.length);
 		console.log('round ' + round);
@@ -176,7 +198,6 @@ function outcomeOfUserSequence(){
 				animateSequence();
 			}, 1000);
 		}
-
 	}
 }
 
@@ -187,20 +208,14 @@ function winMessage(){
 	$('.ui.modal')
 		.modal('setting', 'transition', 'fade')
 		.modal({
-			onDeny: function(){
-				return true;
-			},
 			onApprove: function(){
 				setTimeout(function(){
 					animateSequence();
 				}, 300);
-			},
+			}
 		})
 		.modal('show');
 }
-
-// as soon as you get one wrong play the sad thing
-// wait until the end of the round to play the right thing 
 
 function checkUserSequence(){
 
@@ -213,10 +228,5 @@ function checkUserSequence(){
     }
     return true;
 }
-
-
-// when array is length 20, have cool semantic alert that you won
-
-// strict mode is a toggle so that if you get one wrong it restarts
 
 init();
