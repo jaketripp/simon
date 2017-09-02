@@ -9,39 +9,47 @@ body {
 /* bottom right #1D8CFF */
 
 #green {
+	border-right: 10px solid white;
+	border-bottom: 10px solid white;
 	position: absolute;
 	top: 0;
 	left: 0;
-	right: 50%;
-	bottom: 50%;
-	background-color: #02A74B;
+	right: calc(50% - 10px);
+	bottom: calc(50% - 10px);
+	background-color: #2ecc71;
 }
 
-#red {
+#orange {
+	border-left: 10px solid white;
+	border-bottom: 10px solid white;
 	position: absolute;
 	top: 0;
-	left: 50%;
+	left: calc(50% - 10px);
 	right: 0;
-	bottom: 50%;
-	background-color: #9C121C
+	bottom: calc(50% - 10px);
+	background-color: #f39c12;
 }
 
 #yellow {
+	border-right: 10px solid white;
+	border-top: 10px solid white;	
 	position: absolute;
-	top: 50%;
+	top: calc(50% - 10px);
 	left: 0;
-	right: 50%;
+	right: calc(50% - 10px);
 	bottom: 0;
-	background-color: #CBA60C
+	background-color: #eeee08;
 }
 
 #blue {
+	border-left: 10px solid white;
+	border-top: 10px solid white;	
 	position: absolute;
-	top: 50%;
-	left: 50%;
+	top: calc(50% - 10px);
+	left: calc(50% - 10px);
 	right: 0;
 	bottom: 0;
-	background-color: #1D8CFF
+	background-color: #3498db;
 }
 
 .button{

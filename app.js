@@ -8,7 +8,7 @@ var round = 1;
 var numberToWin = 20;
 
 var key = {
-	1: '#red',
+	1: '#orange',
 	2: '#green',
 	3: '#yellow',
 	4: '#blue'
@@ -79,7 +79,7 @@ function clickEvents(){
 	$('.buttons').on('transitionend', '.tile', removeTransition);
 
 	// restart button
-	$('label#restart').on('click', function(){
+	$('#restart').on('click', function(){
 		reset();
 		animateSequence();
 	});
@@ -91,7 +91,7 @@ function clickEvents(){
 function keyDownEvent(){
 
 	var keyCodeToColor = {
-		82: "#red",
+		82: "#orange",
 		71: "#green",
 		89: "#yellow",
 		66: "#blue"
@@ -134,7 +134,7 @@ function removeEventHandlers(){
 	$('.tile').off();
 	$('.buttons').off();
 	$('input').off();
-	$('label#restart').off();
+	$('#restart').off();
 	$('body').off();
 }
 
